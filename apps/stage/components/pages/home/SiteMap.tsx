@@ -39,7 +39,7 @@ interface Category {
 const categories: Record<string, Category> = {
 	data: {
 		title: 'Explore The Data',
-		description: 'Two data table examples.',
+		description: 'Three data table examples.',
 	},
 	documentation: {
 		title: 'Documentation',
@@ -50,13 +50,18 @@ const categories: Record<string, Category> = {
 const products: Product[] = [
 	// Data Category
 	{
-		title: 'File Data',
-		link: INTERNAL_PATHS.FILE,
+		title: 'Sample Table',
+		link: INTERNAL_PATHS.SAMPLE,
 		category: 'data',
 	},
 	{
-		title: 'Tabular Data',
-		link: INTERNAL_PATHS.TABULAR,
+		title: 'Summary Table',
+		link: INTERNAL_PATHS.SUMMARY,
+		category: 'data',
+	},
+	{
+		title: 'Id Table',
+		link: INTERNAL_PATHS.ID_MAPPING,
 		category: 'data',
 	},
 	// Documentation Category

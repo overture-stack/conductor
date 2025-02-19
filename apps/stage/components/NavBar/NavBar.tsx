@@ -111,14 +111,19 @@ const NavBar = (): ReactElement => {
 					<Dropdown
 						css={linkStyles}
 						data={[
-							<InternalLink path={INTERNAL_PATHS.TABULAR}>
-								<StyledListLink className={cx({ active: router.asPath.startsWith(INTERNAL_PATHS.TABULAR) })}>
-									Tabular Data
+							<InternalLink path={INTERNAL_PATHS.SAMPLE}>
+								<StyledListLink className={cx({ active: router.asPath.startsWith(INTERNAL_PATHS.SAMPLE) })}>
+									Sample Table
 								</StyledListLink>
 							</InternalLink>,
-							<InternalLink path={INTERNAL_PATHS.FILE}>
-								<StyledListLink className={cx({ active: router.asPath.startsWith(INTERNAL_PATHS.FILE) })}>
-									File Data
+							<InternalLink path={INTERNAL_PATHS.SUMMARY}>
+								<StyledListLink className={cx({ active: router.asPath.startsWith(INTERNAL_PATHS.SUMMARY) })}>
+									Summary Table
+								</StyledListLink>
+							</InternalLink>,
+							<InternalLink path={INTERNAL_PATHS.ID_MAPPING}>
+								<StyledListLink className={cx({ active: router.asPath.startsWith(INTERNAL_PATHS.ID_MAPPING) })}>
+									Id Mapping Table
 								</StyledListLink>
 							</InternalLink>,
 						]}
@@ -129,7 +134,7 @@ const NavBar = (): ReactElement => {
 							Documentation
 						</StyledLink>
 					</InternalLink>
-					<Dropdown
+					{/* <Dropdown
 						css={linkStyles}
 						data={[
 							<InternalLink path={INTERNAL_PATHS.LYRIC}>
@@ -154,7 +159,7 @@ const NavBar = (): ReactElement => {
 							</InternalLink>,
 						]}
 						label="APIs"
-					/>
+					/> */}
 				</div>
 
 				{/* Auth Section */}

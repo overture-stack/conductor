@@ -32,8 +32,9 @@ export const LOGIN_PATH = '/login';
 export const ROOT_PATH = '/';
 
 export enum INTERNAL_PATHS {
-	FILE = '/file',
-	TABULAR = '/tabular',
+	SAMPLE = '/sampleTable',
+	SUMMARY = '/summaryTable',
+	ID_MAPPING = '/idMappingTable',
 	HOME = '/home',
 	DOCUMENTATION = '/documentation',
 	SONG = '/swaggerDocs/song',
@@ -45,6 +46,7 @@ export enum INTERNAL_PATHS {
 // external docs links
 export const HELP_URL = 'https://github.com/overture-stack/docs/discussions/new?category=support';
 export const EMAIL_SETTING_URL = 'admin@example.com';
+export const DOCS_URL = 'docs.overture.bio';
 
 // keycloak
 export const KEYCLOAK_URL_ISSUER = urlJoin(NEXT_PUBLIC_KEYCLOAK_HOST, 'realms', NEXT_PUBLIC_KEYCLOAK_REALM);
@@ -59,8 +61,9 @@ const PROXY_API_PATH = '/api';
 const PROXY_PROTECTED_API_PATH = '/api/protected';
 
 export const INTERNAL_API_PROXY = {
-	FILE_ARRANGER: urlJoin(PROXY_API_PATH, 'file_arranger'),
-	TABULAR_ARRANGER: urlJoin(PROXY_API_PATH, 'tabular_arranger'),
+	SAMPLE_ARRANGER: urlJoin(PROXY_API_PATH, 'sample_arranger'),
+	SUMMARY_ARRANGER: urlJoin(PROXY_API_PATH, 'summary_arranger'),
+	ID_MAPPING_ARRANGER: urlJoin(PROXY_API_PATH, 'id_arranger'),
 	PROTECTED_ARRANGER: urlJoin(PROXY_PROTECTED_API_PATH, 'arranger'),
 	PROTECTED_KEYCLOAK_APIKEY_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'keycloak/apikey'),
 	PROTECTED_KEYCLOAK_TOKEN_ENDPOINT: urlJoin(PROXY_PROTECTED_API_PATH, 'keycloak/token'),

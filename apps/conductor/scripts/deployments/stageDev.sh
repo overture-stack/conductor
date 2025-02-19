@@ -1,9 +1,9 @@
-a#!/bin/sh
+#!/bin/sh
 
 # Debug mode flag (set to "true" to enable debug output)
 DEBUG=false
 # Set the base directory for scripts
-SCRIPT_DIR="/scripts/services/phase1"
+SCRIPT_DIR="conductor/scripts/services/phase1"
 
 # Debug function for logging
 debug() {
@@ -38,34 +38,36 @@ echo -e "\033[1;36m║    Spinning up the StageDev Environment    ║\033[0m"
 echo -e "\033[1;36m╚════════════════════════════════════════════╝\033[0m"
 
 # Cleanup any existing healthcheck file
-echo -e "\033[1;35m[1/7]\033[0m Cleaning up existing health check files"
+echo -e "\n\033[1;35m[1/7]\033[0m Cleaning up existing health check files"
 rs "${SCRIPT_DIR}/healthcheckCleanup.sh"
 
 echo -e "\033[1;36mElasticsearch:\033[0m Starting up (this may take a few minutes)"
 rs "${SCRIPT_DIR}/elasticsearchCheck.sh"
 
 # Elasticsearch (File) Setup
-echo -e "\033[1;35m[2/7]\033[0m Setting up File Data in Elasticsearch"
-rs "${SCRIPT_DIR}/elasticsearchSetupFileData.sh"
+echo -e "\n\033[1;35m[2/7]\033[0m Setting up Sample Data in Elasticsearch"
+rs "${SCRIPT_DIR}/elasticsearchSetupSampleData.sh"
 
 # Elasticsearch (Tabular) Setup
-echo -e "\033[1;35m[3/7]\033[0m Setting Tabular Data in Elasticsearch"
-rs "${SCRIPT_DIR}/elasticsearchSetupTabularData.sh"
+echo -e "\n\033[1;35m[3/7]\033[0m Setting Summary Data in Elasticsearch"
+rs "${SCRIPT_DIR}/elasticsearchSetupSummaryData.sh"
+
+# Elasticsearch (Tabular) Setup
+echo -e "\n\033[1;35m[4/7]\033[0m Setting Id Mapping Data in Elasticsearch"
+rs "${SCRIPT_DIR}/elasticsearchSetupIdMappingData.sh"
 
 # Update Conductor to Healthy Status
-echo -e "\033[1;35m[4/7]\033[0m Updating Conductor health status"
+echo -e "\n\033[1;35m[5/7]\033[0m Updating Conductor health status"
 echo "healthy" > /health/conductor_health
 echo -e "\033[1;36mConductor:\033[0m Updating Container Status. Health check file created"
 
 # Check Arranger
-echo -e "\033[1;35m[6/7]\033[0m Checking Arranger"
-rs "${SCRIPT_DIR}/arrangerCheck.sh"
-
-echo -e "\033[1;35m[7/7]\033[0m Running mock data submission..."
-rs "${SCRIPT_DIR}/submitMockData.sh"
+echo -e "\n\033[1;35m[7/7]\033[0m Checking Arranger"
+rs "${SCRIPT_DIR}/arrangerChecks.sh"
 
 # Remove Health Check File
 rm /health/conductor_health
+echo -e "\n"
 
 # Success and Next Steps
 echo -e "\n" 

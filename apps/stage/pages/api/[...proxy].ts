@@ -8,8 +8,9 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 const proxy = httpProxy.createProxyServer();
 
 const {
-	NEXT_PUBLIC_ARRANGER_FILE_DATA_API,
-	NEXT_PUBLIC_ARRANGER_TABULAR_DATA_API,
+	NEXT_PUBLIC_ARRANGER_SAMPLE_DATA_API,
+	NEXT_PUBLIC_ARRANGER_SUMMARY_DATA_API,
+	NEXT_PUBLIC_ARRANGER_ID_MAPPING_DATA_API,
 	NEXT_PUBLIC_SONG_API,
 	NEXT_PUBLIC_LYRIC_API,
 	NEXT_PUBLIC_LECTERN_API,
@@ -66,12 +67,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		let target = '';
 
 		// Handle Arranger requests
-		if (req.url?.startsWith(INTERNAL_API_PROXY.FILE_ARRANGER)) {
-			path = removeFromPath(req?.url, INTERNAL_API_PROXY.FILE_ARRANGER);
-			target = NEXT_PUBLIC_ARRANGER_FILE_DATA_API;
-		} else if (req.url?.startsWith(INTERNAL_API_PROXY.TABULAR_ARRANGER)) {
-			path = removeFromPath(req?.url, INTERNAL_API_PROXY.TABULAR_ARRANGER);
-			target = NEXT_PUBLIC_ARRANGER_TABULAR_DATA_API;
+		if (req.url?.startsWith(INTERNAL_API_PROXY.SAMPLE_ARRANGER)) {
+			path = removeFromPath(req?.url, INTERNAL_API_PROXY.SAMPLE_ARRANGER);
+			target = NEXT_PUBLIC_ARRANGER_SAMPLE_DATA_API;
+		} else if (req.url?.startsWith(INTERNAL_API_PROXY.SUMMARY_ARRANGER)) {
+			path = removeFromPath(req?.url, INTERNAL_API_PROXY.SUMMARY_ARRANGER);
+			target = NEXT_PUBLIC_ARRANGER_SUMMARY_DATA_API;
+		} else if (req.url?.startsWith(INTERNAL_API_PROXY.ID_MAPPING_ARRANGER)) {
+			path = removeFromPath(req?.url, INTERNAL_API_PROXY.ID_MAPPING_ARRANGER);
+			target = NEXT_PUBLIC_ARRANGER_SUMMARY_DATA_API;
 		}
 		// Handle Service API requests
 		else if (path?.startsWith('/api/song/')) {

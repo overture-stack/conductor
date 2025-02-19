@@ -11,63 +11,44 @@ services:
   #  scripts to automate general setup and configuration.                              #
   # ================================================================================== #
   conductor:
-    profiles:
-      [
-        "phase1",
-        "phase2",
-        "phase3",
-        "loadLecternDictionary",
-        "registerLyricDictionary",
-        "submitLyricData",
-        "indexLyricData",
-        "loadSongSchema",
-        "createSongStudy",
-        "submitSongData",
-        "indexSongData",
-        "phaseOneSubmission",
-        "stageDev",
-        "default",
-      ]
+    profiles: ["phase1", "phaseOneSubmission", "stageDev", "default"]
     image: alpine/curl:8.8.0
     container_name: conductor
     ports:
       - "9204:9204"
     volumes:
-      - ./apps/composer/configs:/configs
+      - ./apps/conductor:/conductor
       - ./data:/data
-      - ./apps/conductor/scripts:/scripts
       - ./volumes/health:/health
     environment:
       PROFILE: ${PROFILE:-default}
-      # Output Directories
-      SONG_SCHEMA: /configs/songSchema
-      LECTERN_DICTIONARY: /configs/lecternDictionaries
-      ES_MAPPINGS: /configs/elasticsearchConfigs
-      ARRANGER_CONFIGS: /configs/arrangerConfigs
-      # Elasticsearch service script variables
+      # Service script variables
       ES_USER: elastic
       ES_PASS: myelasticpassword
-      FILE_INDEX_NAME: file-index
-      FILE_ES_TEMPLATE_FILE: /configs/elasticsearchConfigs/file_data_index_template.json
-      # File Metadata Mapping
-      FILE_ES_TEMPLATE_NAME: file_template
-      FILE_ES_ALIAS_NAME: file_centric
-      TABULAR_INDEX_NAME: tabular-index
-      # Tabular Mapping
-      TABULAR_ES_TEMPLATE_FILE: /configs/elasticsearchConfigs/tabular_data_index_template.json
-      TABULAR_ES_TEMPLATE_NAME: tabular_template
-      TABULAR_ES_ALIAS_NAME: tabular_centric
-      # Service Ports
+      # Index 0 - ID Mapping
+      ES_TEMPLATE_FILE_0: conductor/configs/elasticsearchConfigs/id-index-mapping.json
+      ES_TEMPLATE_NAME_0: id-template
+      FILE_ES_TEMPLATE_NAME: id-template
+      INDEX_NAME_0: id-index
+      ES_ALIAS_NAME_0: id
+      # Index 1 - Sample
+      ES_TEMPLATE_FILE_1: conductor/configs/elasticsearchConfigs/sample-index-mapping.json
+      ES_TEMPLATE_NAME_1: sample-template
+      FILE_ES_TEMPLATE_NAME_1: sample-template
+      INDEX_NAME_1: sample-index
+      ES_ALIAS_NAME_1: sample
+      # Index 2 - Summary
+      ES_TEMPLATE_FILE_2: conductor/configs/elasticsearchConfigs/summary-index-mapping.json
+      ES_TEMPLATE_NAME_2: summary-template
+      FILE_ES_TEMPLATE_NAME_2: summary-template
+      INDEX_NAME_2: summary-index
+      ES_ALIAS_NAME_2: summary
+      # Service URLs
       STAGE_URL: http://stage:3000
-      LECTERN_URL: http://lectern:3031
       ES_URL: http://elasticsearch:9200
-      LYRIC_URL: http://lyric:3030
-      SONG_URL: http://song:8080
-      SCORE_URL: http://score:8087
-      OBJECT_STORAGE_URL: http://minio:9000
-      MAESTRO_URL: http://maestro:11235
-      ARRANGER_FILE_DATA_URL: http://arranger-file:5050/graphql
-      ARRANGER_TABULAR_DATA_URL: http://arranger-tabular:5051/graphql
+      ARRANGER_SAMPLE_DATA_URL: http://arranger-sample:5050/graphql
+      ARRANGER_SUMMARY_DATA_URL: http://arranger-summary:5051/graphql
+      ARRANGER_ID_MAPPING_DATA_URL: http://arranger-id:5052/graphql
       # Troubleshooting
       DEBUG: false
     command: >
@@ -77,68 +58,18 @@ services:
           case "$PROFILE" in
             "phase1")
               echo "Running phase1 deployment..."
-              chmod +x scripts/deployments/phase1.sh
-              scripts/deployments/phase1.sh
-              ;;
-            "phase2")
-              echo "Running phase2 deployment..."
-              chmod +x scripts/deployments/phase2.sh
-              scripts/deployments/phase2.sh
-              ;;
-            "phase3")
-              echo "Running phase3 deployment ..."
-              chmod +x scripts/deployments/phase3.sh
-              scripts/deployments/phase3.sh
-              ;;
-            "loadLecternDictionary")
-              echo "Updating Lectern dictionary..."
-              chmod +x scripts/lecternSchemaUpload.sh
-              scripts/lecternSchemaUpload.sh
-              ;;
-            "registerLyricDictionary")
-              echo "Registering Lyric with a Lectern dictionary..."
-              chmod +x scripts/lyricRegisterDictionary.sh
-              scripts/lyricRegisterDictionary.sh
-              ;;
-            "submitLyricData")
-              echo "Uploading mock data to Lyric..."
-              chmod +x scripts/lyricDataUpload.sh
-              scripts/lyricDataUpload.sh
-              ;;
-            "indexLyricData")
-              echo "Indexing tabular data..."
-              chmod +x scripts/indexTabularData.sh
-              scripts/indexTabularData.sh
-              ;;
-            "loadSongSchema")
-              echo "Updating Song schema..."
-              chmod +x scripts/songSchemaUpload.sh
-              scripts/songSchemaUpload.sh
-              ;;
-            "createSongStudy")
-              echo "Updating Song with a StudyId..."
-              chmod +x scripts/songStudyCreation.sh
-              scripts/songStudyCreation.sh
-              ;;
-            "submitSongData")
-              echo "Loading Song data..."
-              chmod +x scripts/songDataUpload.sh
-              scripts/songDataUpload.sh
-              ;;
-            "indexSongData")
-              echo "Indexing Song data..."
-              chmod +x scripts/indexSongData.sh
-              scripts/indexSongData.sh
+              chmod +x conductor/scripts/deployments/phase1.sh
+              conductor/scripts/deployments/phase1.sh
               ;;
             "phaseOneSubmission")
               echo "Running tabular data submission..."
-              chmod +x scripts/submitLyricData.sh
-              scripts/submitLyricData.sh
+              chmod +x conductor/scripts/phaseOneSubmission.sh
+              conductor/scripts/phaseOneSubmission.sh
               ;;
             "stageDev")
               echo "Running Stage Dev deployment..."
-              chmod +x scripts/deployments/stageDev.sh
-              scripts/deployments/stageDev.sh
+              chmod +x conductor/scripts/deployments/stageDev.sh
+              conductor/scripts/deployments/stageDev.sh
               ;;
             "default")
               echo "No profile set..."
@@ -178,7 +109,7 @@ services:
   # https://www.elastic.co/guide/en/elasticsearch/reference/7.17/elasticsearch-intro.html #
   # --------------------------------------------------------------------------------------#
   elasticsearch:
-    profiles: ["phase1", "phase2", "phase3", "stageDev", "default"]
+    profiles: ["phase1", "stageDev", "default"]
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.27
     container_name: elasticsearch
     platform: linux/amd64
@@ -215,10 +146,35 @@ services:
   # Search API generation with compatible search UI components                          #
   # Documentation Link: https://docs.overture.bio/docs/core-software/Arranger/overview  #
   # ------------------------------------------------------------------------------------#
-  arranger-tabular:
-    profiles: ["phase1", "phase2", "phase3", "stageDev", "default"]
+  arranger-sample:
+    profiles: ["phase1", "stageDev", "default"]
     image: ghcr.io/overture-stack/arranger-server:3.0.0-beta.36
-    container_name: arranger-tabular
+    container_name: arranger-sample
+    platform: linux/amd64
+    depends_on:
+      conductor:
+        condition: service_healthy
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./apps/conductor/configs/arrangerConfigs/summary-index:/app/modules/server/configs
+    environment:
+      # Elasticsearch Variables
+      ES_HOST: http://elasticsearch:9200
+      ES_USER: elastic
+      ES_PASS: myelasticpassword
+      ES_ARRANGER_SET_INDEX: sample_arranger_set
+      # Arranger Variables (Port required)
+      PORT: 5050
+      DEBUG: false
+      ENABLE_LOGS: false
+    networks:
+      - conductor-network
+
+  arranger-summary:
+    profiles: ["phase1", "stageDev", "default"]
+    image: ghcr.io/overture-stack/arranger-server:3.0.0-beta.36
+    container_name: arranger-summary
     platform: linux/amd64
     depends_on:
       conductor:
@@ -226,15 +182,40 @@ services:
     ports:
       - "5051:5051"
     volumes:
-      - ./apps/composer/configs/arrangerConfigs/tabularDataConfigs:/app/modules/server/configs
+      - ./apps/conductor/configs/arrangerConfigs/summary-index:/app/modules/server/configs
     environment:
       # Elasticsearch Variables
       ES_HOST: http://elasticsearch:9200
       ES_USER: elastic
       ES_PASS: myelasticpassword
-      ES_ARRANGER_SET_INDEX: tabular_arranger_set
-      # Arranger Variables (Port required)
+      ES_ARRANGER_SET_INDEX: summary_arranger_set
+      # Arranger Variables
       PORT: 5051
+      DEBUG: false
+      ENABLE_LOGS: false
+    networks:
+      - conductor-network
+
+  arranger-id:
+    profiles: ["phase1", "stageDev", "default"]
+    image: ghcr.io/overture-stack/arranger-server:3.0.0-beta.36
+    container_name: arranger-id
+    platform: linux/amd64
+    depends_on:
+      conductor:
+        condition: service_healthy
+    ports:
+      - "5052:5052"
+    volumes:
+      - ./apps/conductor/configs/arrangerConfigs/id-index:/app/modules/server/configs
+    environment:
+      # Elasticsearch Variables
+      ES_HOST: http://elasticsearch:9200
+      ES_USER: elastic
+      ES_PASS: myelasticpassword
+      ES_ARRANGER_SET_INDEX: id_arranger_set
+      # Arranger Variables
+      PORT: 5052
       DEBUG: false
       ENABLE_LOGS: false
     networks:
@@ -247,7 +228,7 @@ services:
   # Documentation Link: https://docs.overture.bio/docs/core-software/Stage/overview     #
   # ------------------------------------------------------------------------------------#
   stage:
-    profiles: ["phase1", "phase2", "phase3", "default"]
+    profiles: ["phase1", "default"]
     image: localstageimage:1.0
     container_name: stage
     pull_policy: never
@@ -265,419 +246,29 @@ services:
       NEXT_PUBLIC_DEBUG: false
       NEXT_PUBLIC_SHOW_MOBILE_WARNING: true
       NEXT_PUBLIC_ENABLE_DOWNLOADS: true
-      # File Arranger Variables
-      NEXT_PUBLIC_ARRANGER_FILE_DATA_API: http://arranger-file:5050
-      NEXT_PUBLIC_ARRANGER_FILE_DATA_DOCUMENT_TYPE: file
-      NEXT_PUBLIC_ARRANGER_FILE_DATA_INDEX: file_centric
-      NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS: repositories.code, analysis.analysis_id, object_id, study_id, file.name, file.size, file.md5sum, file_access, analysis.experiment.acknowledgements.strategy, file.data_type, analysis.experiment.data.sequence_length
-      # Tabular Arranger Variables
-      NEXT_PUBLIC_ARRANGER_TABULAR_DATA_API: http://arranger-tabular:5051
-      NEXT_PUBLIC_ARRANGER_TABULAR_DATA_DOCUMENT_TYPE: file
-      NEXT_PUBLIC_ARRANGER_TABULAR_DATA_INDEX: tabular_centric
-      # Using localhost for client-side requests
-      NEXT_PUBLIC_SONG_API: http://song:8080
-      NEXT_PUBLIC_LYRIC_API: http://lyric:3030
-      NEXT_PUBLIC_LECTERN_API: http://lectern:3031
-      NEXT_PUBLIC_SCORE_API: http://score:8087
+      # Sample Arranger Variables
+      NEXT_PUBLIC_ARRANGER_SAMPLE_DATA_API: http://arranger-sample:5050
+      NEXT_PUBLIC_ARRANGER_SAMPLE_DATA_DOCUMENT_TYPE: file
+      NEXT_PUBLIC_ARRANGER_SAMPLE_DATA_INDEX: sample_centric
+      # Summary Arranger Variables
+      NEXT_PUBLIC_ARRANGER_SUMMARY_DATA_API: http://arranger-summary:5051
+      NEXT_PUBLIC_ARRANGER_SUMMARY_DATA_DOCUMENT_TYPE: file
+      NEXT_PUBLIC_ARRANGER_SUMMARY_DATA_INDEX: summary_centric
+      # Id Mapping Arranger Variables
+      NEXT_PUBLIC_ARRANGER_ID_MAPPING_DATA_API: http://arranger-id:5052
+      NEXT_PUBLIC_ARRANGER_ID_MAPPING_DATA_DOCUMENT_TYPE: file
+      NEXT_PUBLIC_ARRANGER_ID_MAPPING_DATA_INDEX: id_centric
       # Auth Variables
       NEXTAUTH_SECRET: your-secure-secret-here
-      # System Alerts
-      # NEXT_PUBLIC_SYSTEM_ALERTS: '[{"level":"info","title":"API Documentation Available","message":"Swagger documentation for Song, Lyric, Lectern, and Score APIs is now available in the Documentation section.","dismissable":true,"id":"api-docs-available"}]'
-      # CORS Configuration
-      NEXT_PUBLIC_CORS_ENABLED: "true"
-      NEXT_PUBLIC_CORS_ALLOWED_ORIGINS: "*"
     volumes:
       - stage-data:/usr/src/public/static/dms_user_assets
-    networks:
-      - conductor-network
-
-  # ================================================================================== #
-  # ================================================================================== #
-  #                                    phase2:                                         #
-  #                          Tabular data storage & submission                         #
-  # ================================================================================== #
-  # Here we will focus on implementing our back-end tabular data management services   #
-  # which will include the addition of Lyric, Lectern, LyricDb (Postgres) and a        #
-  # LecternDb (MongoDb).                                                               #
-  # ================================================================================== #
-
-  # -----------------------------------------------------------------------------------#
-  # Lectern                                                                            #
-  # -----------------------------------------------------------------------------------#
-  # Schema manager that validates and stores collections of data dictionaries.         #
-  # Documentation Link: https://docs.overture.bio/docs/under-development/lectern/      #
-  # -----------------------------------------------------------------------------------#
-  lectern:
-    profiles: ["phase2", "phase3", "default"]
-    image: ghcr.io/overture-stack/lectern:2.0.0-beta.3
-    container_name: lectern
-    platform: linux/amd64
-    depends_on:
-      lectern-db:
-        condition: service_healthy
-    ports:
-      - "3031:3031"
-    environment:
-      PORT: 3031
-      OPENAPI_PATH: /api-docs
-      MONGO_HOST: lectern-db
-      MONGO_PORT: 27017
-      MONGO_DB: lectern
-      MONGO_USER: admin
-      MONGO_PASS: admin123
-      AUTH_ENABLED: false
-      VAULT_ENABLED: false
-    networks:
-      - conductor-network
-
-  # -----------------------------------------------------------------------------------#
-  # LecternDb                                                                          #
-  # -----------------------------------------------------------------------------------#
-  # Database used by Lectern to store its schemas.                                     #
-  # -----------------------------------------------------------------------------------#
-  lectern-db:
-    profiles: ["phase2", "phase3", "default"]
-    image: bitnami/mongodb:4.0
-    container_name: lectern-db
-    platform: linux/amd64
-    ports:
-      - 27017:27017
-    volumes:
-      - lectern-db-data:/bitnami
-    environment:
-      MONGODB_USERNAME: admin
-      MONGODB_PASSWORD: admin123
-      MONGODB_DATABASE: lectern
-      MONGODB_ROOT_PASSWORD: admin123
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "mongo",
-          "--authenticationDatabase",
-          "admin",
-          "-u",
-          "root",
-          "-p",
-          "admin123",
-          "--eval",
-          "db.adminCommand('ping')",
-        ]
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 40s
-    networks:
-      - conductor-network
-
-  # -----------------------------------------------------------------------------------#
-  # Lryic                                                                              #
-  # -----------------------------------------------------------------------------------#
-  # Submit, validate, and manage structured data according to predefined schemas.      #
-  # Documentation Link: https://docs.overture.bio/docs/under-development/lyric/        #
-  # -----------------------------------------------------------------------------------#
-  lyric:
-    profiles: ["phase2", "phase3", "default"]
-    image: ghcr.io/overture-stack/lyric:0.6.0
-    container_name: lyric
-    platform: linux/amd64
-    depends_on:
-      lyric-db:
-        condition: service_healthy
-      lectern:
-        condition: service_started
-    ports:
-      - "3030:3030"
-    environment:
-      PORT: 3030
-      DB_HOST: lyric-db
-      DB_PORT: 5432
-      DB_NAME: lyricDb
-      DB_USER: admin
-      DB_PASSWORD: admin123
-      LECTERN_URL: http://lectern:3031
-      LOG_LEVEL: debug
-      AUDIT_ENABLED: false
-      ID_USELOCAL: true
-      UPLOAD_LIMIT: "100mb"
-      PLURALIZE_SCHEMAS_ENABLED: false
-    networks:
-      - conductor-network
-
-  # -----------------------------------------------------------------------------------#
-  # LyricDb                                                                            #
-  # -----------------------------------------------------------------------------------#
-  # Database used by Lyric to store its tabular data.                                  #
-  # -----------------------------------------------------------------------------------#
-  lyric-db:
-    profiles: ["phase2", phase3, "default"]
-    image: postgres:15-alpine
-    container_name: lyric-db
-    platform: linux/amd64
-    ports:
-      - 5434:5432
-    environment:
-      POSTGRES_PASSWORD: admin123
-      POSTGRES_USER: admin
-      POSTGRES_DB: lyricDb
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d lyricDb"]
-      interval: 20s
-      timeout: 10s
-      retries: 10
-      start_period: 20s
-    volumes:
-      - lyric-db-data:/var/lib/postgresql/data
-    networks:
-      - conductor-network
-
-  # -----------------------------------------------------------------------------------#
-  # Maestro (Tabular Data)                                                             #
-  # -----------------------------------------------------------------------------------#
-  # Indexs tabular data into Elasticsearch on publication                              #
-  # Documentation Link: https://docs.overture.bio/docs/core-software/Maestro/overview  #
-  # Organization === study                                                             #
-  # id === analysisId                                                                  #
-  # -----------------------------------------------------------------------------------#
-  maestro:
-    profiles: ["phase2", phase3, "default"]
-    image: ghcr.io/overture-stack/maestro:e868d03
-    container_name: maestro
-    platform: linux/amd64
-    depends_on:
-      lectern:
-        condition: service_started
-      conductor:
-        condition: service_healthy
-    ports:
-      - "11235:11235"
-    environment:
-      # Maestro Base Variables
-      MAESTRO_FAILURELOG_ENABLED: true
-      MAESTRO_FAILURELOG_DIR: app/logs/maestro
-      MAESTRO_LOGGING_LEVEL_ROOT: INFO
-      MAESTRO_NOTIFICATIONS_SLACK_ENABLED: false
-      MAESTRO_DISABLEEVENTINDEXING: true
-      # Repository Configuration - Lyric
-      MAESTRO_REPOSITORIES_0_BASE_URL: http://lyric:3030
-      # in the old world we added these to each document in elasticsearch,
-      MAESTRO_REPOSITORIES_0_CODE: lyric.overture
-      MAESTRO_REPOSITORIES_0_NAME: Overture Lyric
-      MAESTRO_REPOSITORIES_0_PAGINATION_SIZE: 50
-      MAESTRO_REPOSITORIES_0_INDEX_NAME: tabular-index
-      MAESTRO_REPOSITORIES_0_TYPE: LYRIC
-      MAESTRO_REPOSITORIES_0_LYRIC_VALID_DATA_ONLY: true
-      MAESTRO_REPOSITORIES_0_LYRIC_CATEGORY_ID: 1
-      # Elasticsearch Settings (Required)
-      MAESTRO_ELASTICSEARCH_NODES: http://elasticsearch:9200
-      MAESTRO_ELASTICSEARCH_VERSION: 7
-      MAESTRO_ELASTICSEARCH_CLIENT_BASICAUTH_ENABLED: true
-      MAESTRO_ELASTICSEARCH_CLIENT_BASICAUTH_USER: elastic
-      MAESTRO_ELASTICSEARCH_CLIENT_BASICAUTH_PASSWORD: myelasticpassword
-      MAESTRO_ELASTICSEARCH_CLIENT_RETRY_MAX_ATTEMPTS: 3
-      MAESTRO_ELASTICSEARCH_CLIENT_RETRY_WAIT_DURATION_MILLIS: 500
-      MAESTRO_ELASTICSEARCH_CLIENT_DOCS_PER_BULK_REQ_MAX: 5000
-      MAESTRO_ELASTICSEARCH_CLIENT_CONNECTION_TIMEOUT: 5000
-      # Repository Configuration - Song
-      MAESTRO_REPOSITORIES_1_BASE_URL: http://song:8080
-      MAESTRO_REPOSITORIES_1_CODE: song.overture
-      MAESTRO_REPOSITORIES_1_NAME: Overture Song
-      MAESTRO_REPOSITORIES_1_PAGINATION_SIZE: 50
-      MAESTRO_REPOSITORIES_1_INDEX_NAME: file-index
-      MAESTRO_REPOSITORIES_1_TYPE: SONG
-      MAESTRO_REPOSITORIES_1_SONG_INDEXABLE_STUDY_STATES: PUBLISHED
-      MAESTRO_REPOSITORIES_1_SONG_ANALYSIS_CENTRIC_ENABLED: true
-      MAESTRO_REPOSITORIES_1_SONG_ORGANIZATION: OICR
-      MAESTRO_REPOSITORIES_1_SONG_COUNTRY: CA
-    volumes:
-      - maestro-data:/app/app-data
-    networks:
-      - conductor-network
-
-  # ================================================================================== #
-  # ================================================================================== #
-  #                                    phase3:                                         #
-  #                          File data storage & submission                            #
-  # ================================================================================== #
-  # Here we will focus on implementing our back-end file management services which     #
-  # will include the addition of Song, Score, SongDb (Postgres) and an Object          #
-  # Storage provider (Minio).                                                          #
-  # ================================================================================== #
-
-  # -----------------------------------------------------------------------------------#
-  # Song                                                                               #
-  # -----------------------------------------------------------------------------------#
-  # Catalog and manage metadata associated to file data                                #
-  # Documentation Link: https://docs.overture.bio/docs/core-software/Song/overview     #
-  # -----------------------------------------------------------------------------------#
-  song:
-    profiles: ["phase3", "default"]
-    image: ghcr.io/overture-stack/song-server:a81a8e48
-    container_name: song
-    platform: linux/amd64
-    depends_on:
-      song-db:
-        condition: service_healthy
-    ports:
-      - "8080:8080"
-    environment:
-      # Spring Variables
-      SPRING_PROFILES_ACTIVE: dev, noSecurityDev
-      # Swagger/OpenAPI Configuration
-      SPRING_MVC_CORS_ENABLED: "true"
-      SPRING_MVC_CORS_ALLOWED-ORIGINS: "*"
-      SPRING_MVC_CORS_ALLOWED-METHODS: "GET,POST,PUT,DELETE,PATCH,OPTIONS"
-      SPRING_MVC_CORS_ALLOWED-HEADERS: "*"
-      SPRING_MVC_CORS_ALLOW-CREDENTIALS: "true"
-      # Flyway variables
-      SPRING_FLYWAY_ENABLED: true
-      # Song Variables
-      ID_USELOCAL: true
-      SCHEMAS_ENFORCELATEST: true
-      # Score Variables
-      SCORE_URL: http://score:8087
-      # Postgres Variables
-      SPRING_DATASOURCE_URL: jdbc:postgresql://song-db:5432/songDb?stringtype=unspecified
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: admin123
-      # Swagger Variable
-      SWAGGER_ALTERNATEURL: /swagger-api
-    networks:
-      - conductor-network
-
-  # -----------------------------------------------------------------------------------#
-  # SongDb                                                                             #
-  # -----------------------------------------------------------------------------------#
-  # Database used by Lyric to store its tabular data.                                  #
-  # -----------------------------------------------------------------------------------#
-  song-db:
-    profiles: ["phase3", "default"]
-    depends_on:
-      - conductor
-    image: postgres:11.1
-    container_name: song-db
-    platform: linux/amd64
-    ports:
-      - "5433:5432"
-    environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin123
-      POSTGRES_DB: songDb
-    user: postgres:postgres
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d songDb"]
-      interval: 20s
-      timeout: 10s
-      retries: 10
-      start_period: 20s
-    volumes:
-      - song-db-data:/var/lib/postgresql/data
-    networks:
-      - conductor-network
-
-  # -----------------------------------------------------------------------------------#
-  # Score                                                                              #
-  # -----------------------------------------------------------------------------------#
-  # Transfer file data to and from any S3 object storage.                              #
-  # Documentation Link: https://docs.overture.bio/docs/core-software/Score/overview    #
-  # -----------------------------------------------------------------------------------#
-  score:
-    profiles: ["phase3", "default"]
-    image: ghcr.io/overture-stack/score-server:6c4a3a3c
-    container_name: score
-    platform: linux/amd64
-    depends_on:
-      minio:
-        condition: service_healthy
-    ports:
-      - "8087:8087"
-    environment:
-      # Spring Variables
-      SPRING_PROFILES_ACTIVE: noSecurityDev, s3
-      SERVER_PORT: 8087
-      # Song Variable
-      METADATA_URL: http://song:8080
-      # Score Variables
-      SERVER_SSL_ENABLED: "false"
-      # Object Storage Variables
-      S3_ENDPOINT: http://host.docker.internal:9000
-      S3_ACCESSKEY: admin
-      S3_SECRETKEY: admin123
-      S3_SIGV4ENABLED: true
-      S3_SECURED: false
-      OBJECT_SENTINEL: heliograph
-      BUCKET_NAME_OBJECT: object
-      BUCKET_NAME_STATE: state
-      UPLOAD_PARTSIZE: 1073741824
-      UPLOAD_CONNECTION_TIMEOUT: 1200000
-    networks:
-      - conductor-network
-
-  # -----------------------------------------------------------------------------------#
-  # Minio                                                                              #
-  # -----------------------------------------------------------------------------------#
-  # A locally deployed open source S3-compatible object storage                        #
-  # Documentation Link:                                                                #
-  # http://docs.overture.bio/guides/deployment-guide/data-management-&-storage         #
-  # -----------------------------------------------------------------------------------#
-  minio:
-    profiles: ["phase3", "default"]
-    image: minio/minio:RELEASE.2018-05-11T00-29-24Z
-    container_name: minio
-    platform: linux/amd64
-    ports:
-      - 9000:9000
-    environment:
-      MINIO_ACCESS_KEY: admin
-      MINIO_SECRET_KEY: admin123
-    command: server /data
-    volumes:
-      - ./volumes/data-minio:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 30s
-      timeout: 20s
-      retries: 3
-    networks:
-      - conductor-network
-
-  # ------------------------------------------------------------------------------------#
-  # Arranger-Server for our file data                                                   #
-  # ------------------------------------------------------------------------------------#
-  # Search API generation with compatible search UI components                          #
-  # Documentation Link: https://docs.overture.bio/docs/core-software/Arranger/overview  #
-  # ------------------------------------------------------------------------------------#
-  arranger-file:
-    profiles: ["phase3", "stageDev", "default"]
-    image: ghcr.io/overture-stack/arranger-server:3.0.0-beta.36
-    container_name: arranger-file
-    platform: linux/amd64
-    depends_on:
-      conductor:
-        condition: service_healthy
-    ports:
-      - "5050:5050"
-    volumes:
-      - ./apps/composer/configs/arrangerConfigs/fileDataConfigs:/app/modules/server/configs
-    environment:
-      # Elasticsearch Variables
-      ES_HOST: http://elasticsearch:9200
-      ES_USER: elastic
-      ES_PASS: myelasticpassword
-      ES_ARRANGER_SET_INDEX: file_arranger_set
-      # Arranger Variables
-      DEBUG: false
-      ENABLE_LOGS: false
     networks:
       - conductor-network
 
 volumes:
   elasticsearch-data:
   stage-data:
-  maestro-data:
-  song-db-data:
-  lyric-db-data:
-  lectern-db-data:
+
 networks:
   conductor-network:
     driver: bridge

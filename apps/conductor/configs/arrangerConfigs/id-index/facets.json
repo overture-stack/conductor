@@ -1,0 +1,236 @@
+{
+  "facets": {
+    "aggregations": [
+      {
+        "active": true,
+        "fieldName": "external_id",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "donor",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Age_at_diagnosis",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Sex",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Date_of_Tissue",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Sample",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "PPID",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "PDO_ID_Notta",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "PDO_ID_PMLB",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Plasma_WGS",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Histology",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Staging_at_Diagnosis_T",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Staging_at_Diagnosis_N",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Staging_at_Diagnosis_M",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Date_of_Rx",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Tx_Type",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "CRUK",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "PIMO",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "COMPASS",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "NeoPancONE",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "PASS",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "ARCAP",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "PA7",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "PA6",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Prosper_Panc",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "HPB_Banking",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "OPCS",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Surgical_DB",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "TMA_1",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "TMA_2",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Rapid_Autopsy",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Jackson_Lab_ID",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "McGaha_Lab_ID",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "Sheba_SPC",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "QPCS_ID",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "OCIP_ID",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "PCD_ID",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "RB_xxxx",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "GPxx",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "submission_metasubmitter_id",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "submission_metaprocessing_started",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "submission_metaprocessed_at",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "submission_metasource_file",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "submission_metarecord_number",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "submission_metahostname",
+        "show": true
+      },
+      {
+        "active": true,
+        "fieldName": "submission_metausername",
+        "show": true
+      }
+    ]
+  }
+}
