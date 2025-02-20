@@ -3,475 +3,475 @@
     "columns": [
       {
         "canChangeShow": true,
-        "fieldName": "external_id",
+        "fieldName": "data.external_id",
         "show": true,
         "sortable": true,
-        "jsonPath": "external_id",
-        "query": "external_id }"
+        "jsonPath": "$.data.external_id",
+        "query": "data { external_id }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "donor",
+        "fieldName": "data.donor",
         "show": true,
         "sortable": true,
-        "jsonPath": "donor",
-        "query": "donor }"
+        "jsonPath": "$.data.donor",
+        "query": "data { donor }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Age_at_diagnosis",
+        "fieldName": "data.Age_at_diagnosis",
         "show": true,
         "sortable": true,
-        "jsonPath": "Age_at_diagnosis",
-        "query": "Age_at_diagnosis }"
+        "jsonPath": "$.data.Age_at_diagnosis",
+        "query": "data { Age_at_diagnosis }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Sex",
+        "fieldName": "data.Sex",
         "show": true,
         "sortable": true,
-        "jsonPath": "Sex",
-        "query": "Sex }"
+        "jsonPath": "$.data.Sex",
+        "query": "data { Sex }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Date_of_Tissue",
+        "fieldName": "data.Date_of_Tissue",
         "show": true,
         "sortable": true,
-        "jsonPath": "Date_of_Tissue",
-        "query": "Date_of_Tissue }"
+        "jsonPath": "$.data.Date_of_Tissue",
+        "query": "data { Date_of_Tissue }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Sample",
+        "fieldName": "data.Sample",
         "show": true,
         "sortable": true,
-        "jsonPath": "Sample",
-        "query": "Sample }"
+        "jsonPath": "$.data.Sample",
+        "query": "data { Sample }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PPID",
+        "fieldName": "data.PPID",
         "show": true,
         "sortable": true,
-        "jsonPath": "PPID",
-        "query": "PPID }"
+        "jsonPath": "$.data.PPID",
+        "query": "data { PPID }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PDO_available",
+        "fieldName": "data.PDO_available",
         "show": true,
         "sortable": true,
-        "jsonPath": "PDO_available",
-        "query": "PDO_available }"
+        "jsonPath": "$.data.PDO_available",
+        "query": "data { PDO_available }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PDO_ID_Notta",
+        "fieldName": "data.PDO_ID_Notta",
         "show": true,
         "sortable": true,
-        "jsonPath": "PDO_ID_Notta",
-        "query": "PDO_ID_Notta }"
+        "jsonPath": "$.data.PDO_ID_Notta",
+        "query": "data { PDO_ID_Notta }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PDO_ID_PMLB",
+        "fieldName": "data.PDO_ID_PMLB",
         "show": true,
         "sortable": true,
-        "jsonPath": "PDO_ID_PMLB",
-        "query": "PDO_ID_PMLB }"
+        "jsonPath": "$.data.PDO_ID_PMLB",
+        "query": "data { PDO_ID_PMLB }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PDO_WT_RNAseq",
+        "fieldName": "data.PDO_WT_RNAseq",
         "show": true,
         "sortable": true,
-        "jsonPath": "PDO_WT_RNAseq",
-        "query": "PDO_WT_RNAseq }"
+        "jsonPath": "$.data.PDO_WT_RNAseq",
+        "query": "data { PDO_WT_RNAseq }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PDO_WGS",
+        "fieldName": "data.PDO_WGS",
         "show": true,
         "sortable": true,
-        "jsonPath": "PDO_WGS",
-        "query": "PDO_WGS }"
+        "jsonPath": "$.data.PDO_WGS",
+        "query": "data { PDO_WGS }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PDO_Exome",
+        "fieldName": "data.PDO_Exome",
         "show": true,
         "sortable": true,
-        "jsonPath": "PDO_Exome",
-        "query": "PDO_Exome }"
+        "jsonPath": "$.data.PDO_Exome",
+        "query": "data { PDO_Exome }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PDO_drugscreen",
+        "fieldName": "data.PDO_drugscreen",
         "show": true,
         "sortable": true,
-        "jsonPath": "PDO_drugscreen",
-        "query": "PDO_drugscreen }"
+        "jsonPath": "$.data.PDO_drugscreen",
+        "query": "data { PDO_drugscreen }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Tumour_scRNAseq",
+        "fieldName": "data.Tumour_scRNAseq",
         "show": true,
         "sortable": true,
-        "jsonPath": "Tumour_scRNAseq",
-        "query": "Tumour_scRNAseq }"
+        "jsonPath": "$.data.Tumour_scRNAseq",
+        "query": "data { Tumour_scRNAseq }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Tumour_scCNV",
+        "fieldName": "data.Tumour_scCNV",
         "show": true,
         "sortable": true,
-        "jsonPath": "Tumour_scCNV",
-        "query": "Tumour_scCNV }"
+        "jsonPath": "$.data.Tumour_scCNV",
+        "query": "data { Tumour_scCNV }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Tumour_multiome",
+        "fieldName": "data.Tumour_multiome",
         "show": true,
         "sortable": true,
-        "jsonPath": "Tumour_multiome",
-        "query": "Tumour_multiome }"
+        "jsonPath": "$.data.Tumour_multiome",
+        "query": "data { Tumour_multiome }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Tumour_spatial",
+        "fieldName": "data.Tumour_spatial",
         "show": true,
         "sortable": true,
-        "jsonPath": "Tumour_spatial",
-        "query": "Tumour_spatial }"
+        "jsonPath": "$.data.Tumour_spatial",
+        "query": "data { Tumour_spatial }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Plasma_WGS",
+        "fieldName": "data.Plasma_WGS",
         "show": true,
         "sortable": true,
-        "jsonPath": "Plasma_WGS",
-        "query": "Plasma_WGS }"
+        "jsonPath": "$.data.Plasma_WGS",
+        "query": "data { Plasma_WGS }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Plasma_cfRNA",
+        "fieldName": "data.Plasma_cfRNA",
         "show": true,
         "sortable": true,
-        "jsonPath": "Plasma_cfRNA",
-        "query": "Plasma_cfRNA }"
+        "jsonPath": "$.data.Plasma_cfRNA",
+        "query": "data { Plasma_cfRNA }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Histology",
+        "fieldName": "data.Histology",
         "show": true,
         "sortable": true,
-        "jsonPath": "Histology",
-        "query": "Histology }"
+        "jsonPath": "$.data.Histology",
+        "query": "data { Histology }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Staging_at_Diagnosis_T",
+        "fieldName": "data.Staging_at_Diagnosis_T",
         "show": true,
         "sortable": true,
-        "jsonPath": "Staging_at_Diagnosis_T",
-        "query": "Staging_at_Diagnosis_T }"
+        "jsonPath": "$.data.Staging_at_Diagnosis_T",
+        "query": "data { Staging_at_Diagnosis_T }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Staging_at_Diagnosis_N",
+        "fieldName": "data.Staging_at_Diagnosis_N",
         "show": true,
         "sortable": true,
-        "jsonPath": "Staging_at_Diagnosis_N",
-        "query": "Staging_at_Diagnosis_N }"
+        "jsonPath": "$.data.Staging_at_Diagnosis_N",
+        "query": "data { Staging_at_Diagnosis_N }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Staging_at_Diagnosis_M",
+        "fieldName": "data.Staging_at_Diagnosis_M",
         "show": true,
         "sortable": true,
-        "jsonPath": "Staging_at_Diagnosis_M",
-        "query": "Staging_at_Diagnosis_M }"
+        "jsonPath": "$.data.Staging_at_Diagnosis_M",
+        "query": "data { Staging_at_Diagnosis_M }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Biopsy_at_Diagnosis",
+        "fieldName": "data.Biopsy_at_Diagnosis",
         "show": true,
         "sortable": true,
-        "jsonPath": "Biopsy_at_Diagnosis",
-        "query": "Biopsy_at_Diagnosis }"
+        "jsonPath": "$.data.Biopsy_at_Diagnosis",
+        "query": "data { Biopsy_at_Diagnosis }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Date_of_Rx",
+        "fieldName": "data.Date_of_Rx",
         "show": true,
         "sortable": true,
-        "jsonPath": "Date_of_Rx",
-        "query": "Date_of_Rx }"
+        "jsonPath": "$.data.Date_of_Rx",
+        "query": "data { Date_of_Rx }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Systemic_Tx",
+        "fieldName": "data.Systemic_Tx",
         "show": true,
         "sortable": true,
-        "jsonPath": "Systemic_Tx",
-        "query": "Systemic_Tx }"
+        "jsonPath": "$.data.Systemic_Tx",
+        "query": "data { Systemic_Tx }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Tx_Type",
+        "fieldName": "data.Tx_Type",
         "show": true,
         "sortable": true,
-        "jsonPath": "Tx_Type",
-        "query": "Tx_Type }"
+        "jsonPath": "$.data.Tx_Type",
+        "query": "data { Tx_Type }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Biopsy_at_Progression",
+        "fieldName": "data.Biopsy_at_Progression",
         "show": true,
         "sortable": true,
-        "jsonPath": "Biopsy_at_Progression",
-        "query": "Biopsy_at_Progression }"
+        "jsonPath": "$.data.Biopsy_at_Progression",
+        "query": "data { Biopsy_at_Progression }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "CRUK",
+        "fieldName": "data.CRUK",
         "show": true,
         "sortable": true,
-        "jsonPath": "CRUK",
-        "query": "CRUK }"
+        "jsonPath": "$.data.CRUK",
+        "query": "data { CRUK }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PIMO",
+        "fieldName": "data.PIMO",
         "show": true,
         "sortable": true,
-        "jsonPath": "PIMO",
-        "query": "PIMO }"
+        "jsonPath": "$.data.PIMO",
+        "query": "data { PIMO }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "COMPASS",
+        "fieldName": "data.COMPASS",
         "show": true,
         "sortable": true,
-        "jsonPath": "COMPASS",
-        "query": "COMPASS }"
+        "jsonPath": "$.data.COMPASS",
+        "query": "data { COMPASS }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "NeoPancONE",
+        "fieldName": "data.NeoPancONE",
         "show": true,
         "sortable": true,
-        "jsonPath": "NeoPancONE",
-        "query": "NeoPancONE }"
+        "jsonPath": "$.data.NeoPancONE",
+        "query": "data { NeoPancONE }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PASS",
+        "fieldName": "data.PASS",
         "show": true,
         "sortable": true,
-        "jsonPath": "PASS",
-        "query": "PASS }"
+        "jsonPath": "$.data.PASS",
+        "query": "data { PASS }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "ARCAP",
+        "fieldName": "data.ARCAP",
         "show": true,
         "sortable": true,
-        "jsonPath": "ARCAP",
-        "query": "ARCAP }"
+        "jsonPath": "$.data.ARCAP",
+        "query": "data { ARCAP }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PA7",
+        "fieldName": "data.PA7",
         "show": true,
         "sortable": true,
-        "jsonPath": "PA7",
-        "query": "PA7 }"
+        "jsonPath": "$.data.PA7",
+        "query": "data { PA7 }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PA6",
+        "fieldName": "data.PA6",
         "show": true,
         "sortable": true,
-        "jsonPath": "PA6",
-        "query": "PA6 }"
+        "jsonPath": "$.data.PA6",
+        "query": "data { PA6 }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Prosper_Panc",
+        "fieldName": "data.Prosper_Panc",
         "show": true,
         "sortable": true,
-        "jsonPath": "Prosper_Panc",
-        "query": "Prosper_Panc }"
+        "jsonPath": "$.data.Prosper_Panc",
+        "query": "data { Prosper_Panc }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "HPB_Banking",
+        "fieldName": "data.HPB_Banking",
         "show": true,
         "sortable": true,
-        "jsonPath": "HPB_Banking",
-        "query": "HPB_Banking }"
+        "jsonPath": "$.data.HPB_Banking",
+        "query": "data { HPB_Banking }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "OPCS",
+        "fieldName": "data.OPCS",
         "show": true,
         "sortable": true,
-        "jsonPath": "OPCS",
-        "query": "OPCS }"
+        "jsonPath": "$.data.OPCS",
+        "query": "data { OPCS }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Surgical_DB",
+        "fieldName": "data.Surgical_DB",
         "show": true,
         "sortable": true,
-        "jsonPath": "Surgical_DB",
-        "query": "Surgical_DB }"
+        "jsonPath": "$.data.Surgical_DB",
+        "query": "data { Surgical_DB }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "TMA_1",
+        "fieldName": "data.TMA_1",
         "show": true,
         "sortable": true,
-        "jsonPath": "TMA_1",
-        "query": "TMA_1 }"
+        "jsonPath": "$.data.TMA_1",
+        "query": "data { TMA_1 }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "TMA_2",
+        "fieldName": "data.TMA_2",
         "show": true,
         "sortable": true,
-        "jsonPath": "TMA_2",
-        "query": "TMA_2 }"
+        "jsonPath": "$.data.TMA_2",
+        "query": "data { TMA_2 }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Rapid_Autopsy",
+        "fieldName": "data.Rapid_Autopsy",
         "show": true,
         "sortable": true,
-        "jsonPath": "Rapid_Autopsy",
-        "query": "Rapid_Autopsy }"
+        "jsonPath": "$.data.Rapid_Autopsy",
+        "query": "data { Rapid_Autopsy }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Jackson_Lab_ID",
+        "fieldName": "data.Jackson_Lab_ID",
         "show": true,
         "sortable": true,
-        "jsonPath": "Jackson_Lab_ID",
-        "query": "Jackson_Lab_ID }"
+        "jsonPath": "$.data.Jackson_Lab_ID",
+        "query": "data { Jackson_Lab_ID }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "McGaha_Lab_ID",
+        "fieldName": "data.McGaha_Lab_ID",
         "show": true,
         "sortable": true,
-        "jsonPath": "McGaha_Lab_ID",
-        "query": "McGaha_Lab_ID }"
+        "jsonPath": "$.data.McGaha_Lab_ID",
+        "query": "data { McGaha_Lab_ID }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "Sheba_SPC",
+        "fieldName": "data.Sheba_SPC",
         "show": true,
         "sortable": true,
-        "jsonPath": "Sheba_SPC",
-        "query": "Sheba_SPC }"
+        "jsonPath": "$.data.Sheba_SPC",
+        "query": "data { Sheba_SPC }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "QPCS_ID",
+        "fieldName": "data.QPCS_ID",
         "show": true,
         "sortable": true,
-        "jsonPath": "QPCS_ID",
-        "query": "QPCS_ID }"
+        "jsonPath": "$.data.QPCS_ID",
+        "query": "data { QPCS_ID }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "OCIP_ID",
+        "fieldName": "data.OCIP_ID",
         "show": true,
         "sortable": true,
-        "jsonPath": "OCIP_ID",
-        "query": "OCIP_ID }"
+        "jsonPath": "$.data.OCIP_ID",
+        "query": "data { OCIP_ID }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "PCD_ID",
+        "fieldName": "data.PCD_ID",
         "show": true,
         "sortable": true,
-        "jsonPath": "PCD_ID",
-        "query": "PCD_ID }"
+        "jsonPath": "$.data.PCD_ID",
+        "query": "data { PCD_ID }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "RB_xxxx",
+        "fieldName": "data.RB_xxxx",
         "show": true,
         "sortable": true,
-        "jsonPath": "RB_xxxx",
-        "query": "RB_xxxx }"
+        "jsonPath": "$.data.RB_xxxx",
+        "query": "data { RB_xxxx }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "GPxx",
+        "fieldName": "data.GPxx",
         "show": true,
         "sortable": true,
-        "jsonPath": "GPxx",
-        "query": "GPxx }"
+        "jsonPath": "$.data.GPxx",
+        "query": "data { GPxx }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "submission_metasubmitter_id",
+        "fieldName": "data.submission_metadata.submitter_id",
         "show": false,
         "sortable": true,
-        "jsonPath": "submission_metasubmitter_id",
-        "query": "submission_metasubmitter_id } }"
+        "jsonPath": "$.data.submission_metadata.submitter_id",
+        "query": "data { submission_metadata { submitter_id } }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "submission_metaprocessing_started",
+        "fieldName": "data.submission_metadata.processing_started",
         "show": false,
         "sortable": true,
-        "jsonPath": "submission_metaprocessing_started",
-        "query": "submission_metaprocessing_started } }"
+        "jsonPath": "$.data.submission_metadata.processing_started",
+        "query": "data { submission_metadata { processing_started } }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "submission_metaprocessed_at",
+        "fieldName": "data.submission_metadata.processed_at",
         "show": false,
         "sortable": true,
-        "jsonPath": "submission_metaprocessed_at",
-        "query": "submission_metaprocessed_at } }"
+        "jsonPath": "$.data.submission_metadata.processed_at",
+        "query": "data { submission_metadata { processed_at } }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "submission_metasource_file",
+        "fieldName": "data.submission_metadata.source_file",
         "show": false,
         "sortable": true,
-        "jsonPath": "submission_metasource_file",
-        "query": "submission_metasource_file } }"
+        "jsonPath": "$.data.submission_metadata.source_file",
+        "query": "data { submission_metadata { source_file } }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "submission_metarecord_number",
+        "fieldName": "data.submission_metadata.record_number",
         "show": false,
         "sortable": true,
-        "jsonPath": "submission_metarecord_number",
-        "query": "submission_metarecord_number } }"
+        "jsonPath": "$.data.submission_metadata.record_number",
+        "query": "data { submission_metadata { record_number } }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "submission_metahostname",
+        "fieldName": "data.submission_metadata.hostname",
         "show": false,
         "sortable": true,
-        "jsonPath": "submission_metahostname",
-        "query": "submission_metahostname } }"
+        "jsonPath": "$.data.submission_metadata.hostname",
+        "query": "data { submission_metadata { hostname } }"
       },
       {
         "canChangeShow": true,
-        "fieldName": "submission_metausername",
+        "fieldName": "data.submission_metadata.username",
         "show": false,
         "sortable": true,
-        "jsonPath": "submission_metausername",
-        "query": "submission_metausername } }"
+        "jsonPath": "$.data.submission_metadata.username",
+        "query": "data { submission_metadata { username } }"
       }
     ]
   }

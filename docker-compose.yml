@@ -12,7 +12,7 @@ services:
   # ================================================================================== #
   conductor:
     profiles: ["phase1", "phaseOneSubmission", "stageDev", "default"]
-    image: alpine/curl:8.8.0
+    image: node:22-alpine
     container_name: conductor
     ports:
       - "9204:9204"
@@ -49,11 +49,13 @@ services:
       ARRANGER_SAMPLE_DATA_URL: http://arranger-sample:5050/graphql
       ARRANGER_SUMMARY_DATA_URL: http://arranger-summary:5051/graphql
       ARRANGER_ID_MAPPING_DATA_URL: http://arranger-id:5052/graphql
+      TABULAR_DATA_FILE: /data/idMappingDb.csv
       # Troubleshooting
       DEBUG: false
     command: >
       sh -c '
         set -e
+          apk add curl
           echo "Profile is set to: $PROFILE"
           case "$PROFILE" in
             "phase1")
@@ -63,8 +65,8 @@ services:
               ;;
             "phaseOneSubmission")
               echo "Running tabular data submission..."
-              chmod +x conductor/scripts/phaseOneSubmission.sh
-              conductor/scripts/phaseOneSubmission.sh
+              chmod +x conductor/scripts/services/phase1/phaseOneSubmission.sh
+              conductor/scripts/services/phase1/phaseOneSubmission.sh
               ;;
             "stageDev")
               echo "Running Stage Dev deployment..."

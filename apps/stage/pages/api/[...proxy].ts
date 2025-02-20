@@ -75,7 +75,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 			target = NEXT_PUBLIC_ARRANGER_SUMMARY_DATA_API;
 		} else if (req.url?.startsWith(INTERNAL_API_PROXY.ID_MAPPING_ARRANGER)) {
 			path = removeFromPath(req?.url, INTERNAL_API_PROXY.ID_MAPPING_ARRANGER);
-			target = NEXT_PUBLIC_ARRANGER_SUMMARY_DATA_API;
+			target = NEXT_PUBLIC_ARRANGER_ID_MAPPING_DATA_API;
 		}
 		// Handle Service API requests
 		else if (path?.startsWith('/api/song/')) {
