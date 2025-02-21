@@ -1,5 +1,7 @@
 {
-  "index_patterns": ["summary-*"],
+  "index_patterns": [
+    "summary-*"
+  ],
   "aliases": {
     "summary_centric": {}
   },

@@ -13,7 +13,7 @@ services:
     environment:
       PROFILE: ${PROFILE:-default}
       # User Input Paths
-      TABULAR_INDEX_NAMES: sample-index, summary-index, id-index
+      TABULAR_INDEX_NAMES: sample, summary, id
       TABULAR_SAMPLE_DATA: /data/sampleData.csv, /data/summaryData.csv, /data/idMappingDb.csv,
       # Output Directories
       ES_CONFIG_DIR: ../conductor/configs/elasticsearchConfigs

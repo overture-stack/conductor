@@ -1,82 +1,87 @@
 {
-  "index_patterns": [
-    "tabular-*"
-  ],
+  "index_patterns": ["sample-*"],
   "aliases": {
-    "data_centric": {}
+    "sample_centric": {}
   },
   "mappings": {
     "properties": {
       "data": {
         "type": "object",
         "properties": {
-          "donor_id": {
+          "donor_name": {
             "type": "keyword"
           },
-          "gender": {
+          "sample_name": {
             "type": "keyword"
           },
-          "primary_site": {
+          "seq_type": {
             "type": "keyword"
           },
-          "vital_status": {
+          "case_id": {
             "type": "keyword"
           },
-          "diagnosis_id": {
+          "test_id": {
             "type": "keyword"
           },
-          "age_at_diagnosis": {
+          "req_id": {
+            "type": "keyword"
+          },
+          "project": {
+            "type": "keyword"
+          },
+          "external_id": {
+            "type": "keyword"
+          },
+          "tissue_origin": {
+            "type": "keyword"
+          },
+          "tissue_type": {
+            "type": "keyword"
+          },
+          "group_id": {
             "type": "integer"
           },
-          "cancer_type": {
+          "library_design": {
             "type": "keyword"
           },
-          "staging_system": {
+          "library_name": {
             "type": "keyword"
           },
-          "stage": {
+          "sequencer_run": {
             "type": "keyword"
           },
-          "specimen_id": {
+          "sequencing_id": {
+            "type": "keyword",
+            "null_value": "No Data"
+          },
+          "instrument_model": {
             "type": "keyword"
           },
-          "specimen_type": {
+          "gsi_workflow_run_id": {
             "type": "keyword"
           },
-          "tissue_source": {
+          "gsi_workflow": {
             "type": "keyword"
           },
-          "sample_id": {
+          "gsi_workflow_version": {
             "type": "keyword"
           },
-          "sample_type": {
+          "gsi_md5sum": {
             "type": "keyword"
           },
-          "treatment_id": {
+          "gsi_time": {
             "type": "keyword"
           },
-          "treatment_type": {
+          "fastq_path": {
             "type": "keyword"
           },
-          "treatment_start": {
-            "type": "integer"
-          },
-          "treatment_duration": {
-            "type": "integer"
-          },
-          "treatment_response": {
+          "modification_date": {
             "type": "keyword"
           },
-          "drug_name": {
+          "linked_file": {
             "type": "keyword"
           },
-          "followup_id": {
-            "type": "keyword"
-          },
-          "followup_interval": {
-            "type": "integer"
-          },
-          "disease_status": {
+          "linked_file_time": {
             "type": "keyword"
           },
           "submission_metadata": {
@@ -87,10 +92,10 @@
                 "null_value": "No Data"
               },
               "processing_started": {
-                "type": "date"
+                "type": "keyword"
               },
               "processed_at": {
-                "type": "date"
+                "type": "keyword"
               },
               "source_file": {
                 "type": "keyword",

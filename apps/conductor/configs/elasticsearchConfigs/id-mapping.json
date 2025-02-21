@@ -21,7 +21,7 @@
             "type": "keyword"
           },
           "Date_of_Tissue": {
-            "type": "date"
+            "type": "keyword"
           },
           "Sample": {
             "type": "keyword"
@@ -30,43 +30,43 @@
             "type": "keyword"
           },
           "PDO_available": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "PDO_ID_Notta": {
             "type": "keyword"
           },
           "PDO_ID_PMLB": {
-            "type": "integer"
+            "type": "keyword"
           },
           "PDO_WT_RNAseq": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "PDO_WGS": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "PDO_Exome": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "PDO_drugscreen": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "Tumour_scRNAseq": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "Tumour_scCNV": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "Tumour_multiome": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "Tumour_spatial": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "Plasma_WGS": {
             "type": "keyword"
           },
           "Plasma_cfRNA": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "Histology": {
             "type": "keyword",
@@ -82,19 +82,19 @@
             "type": "integer"
           },
           "Biopsy_at_Diagnosis": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "Date_of_Rx": {
-            "type": "date"
+            "type": "keyword"
           },
           "Systemic_Tx": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "Tx_Type": {
             "type": "keyword"
           },
           "Biopsy_at_Progression": {
-            "type": "boolean"
+            "type": "keyword"
           },
           "CRUK": {
             "type": "keyword"
@@ -174,10 +174,10 @@
                 "null_value": "No Data"
               },
               "processing_started": {
-                "type": "date"
+                "type": "keyword"
               },
               "processed_at": {
-                "type": "date"
+                "type": "keyword"
               },
               "source_file": {
                 "type": "keyword",

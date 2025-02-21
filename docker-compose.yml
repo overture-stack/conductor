@@ -26,36 +26,37 @@ services:
       ES_USER: elastic
       ES_PASS: myelasticpassword
       # Index 0 - ID Mapping
-      ES_TEMPLATE_FILE_0: conductor/configs/elasticsearchConfigs/id-index-mapping.json
+      ES_TEMPLATE_FILE_0: conductor/configs/elasticsearchConfigs/id-mapping.json
       ES_TEMPLATE_NAME_0: id-template
       FILE_ES_TEMPLATE_NAME: id-template
       INDEX_NAME_0: id-index
-      ES_ALIAS_NAME_0: id
+      ES_ALIAS_NAME_0: id_centric
       # Index 1 - Sample
-      ES_TEMPLATE_FILE_1: conductor/configs/elasticsearchConfigs/sample-index-mapping.json
+      ES_TEMPLATE_FILE_1: conductor/configs/elasticsearchConfigs/sample-mapping.json
       ES_TEMPLATE_NAME_1: sample-template
       FILE_ES_TEMPLATE_NAME_1: sample-template
       INDEX_NAME_1: sample-index
-      ES_ALIAS_NAME_1: sample
+      ES_ALIAS_NAME_1: sample_centric
       # Index 2 - Summary
-      ES_TEMPLATE_FILE_2: conductor/configs/elasticsearchConfigs/summary-index-mapping.json
+      ES_TEMPLATE_FILE_2: conductor/configs/elasticsearchConfigs/summary-mapping.json
       ES_TEMPLATE_NAME_2: summary-template
       FILE_ES_TEMPLATE_NAME_2: summary-template
       INDEX_NAME_2: summary-index
-      ES_ALIAS_NAME_2: summary
+      ES_ALIAS_NAME_2: summary_centric
       # Service URLs
       STAGE_URL: http://stage:3000
       ES_URL: http://elasticsearch:9200
       ARRANGER_SAMPLE_DATA_URL: http://arranger-sample:5050/graphql
       ARRANGER_SUMMARY_DATA_URL: http://arranger-summary:5051/graphql
       ARRANGER_ID_MAPPING_DATA_URL: http://arranger-id:5052/graphql
-      TABULAR_DATA_FILE: /data/idMappingDb.csv
+      INDEX_NAMES: sample-index, summary-index, id-index
+      DATA_FILES: /data/sampleData.csv, /data/summaryData.csv, /data/idMappingDb.csv
       # Troubleshooting
       DEBUG: false
     command: >
       sh -c '
         set -e
-          apk add curl
+          apk add curl --quiet
           echo "Profile is set to: $PROFILE"
           case "$PROFILE" in
             "phase1")
@@ -159,7 +160,7 @@ services:
     ports:
       - "5050:5050"
     volumes:
-      - ./apps/conductor/configs/arrangerConfigs/summary-index:/app/modules/server/configs
+      - ./apps/conductor/configs/arrangerConfigs/sample:/app/modules/server/configs
     environment:
       # Elasticsearch Variables
       ES_HOST: http://elasticsearch:9200
@@ -184,7 +185,7 @@ services:
     ports:
       - "5051:5051"
     volumes:
-      - ./apps/conductor/configs/arrangerConfigs/summary-index:/app/modules/server/configs
+      - ./apps/conductor/configs/arrangerConfigs/summary:/app/modules/server/configs
     environment:
       # Elasticsearch Variables
       ES_HOST: http://elasticsearch:9200
@@ -209,7 +210,7 @@ services:
     ports:
       - "5052:5052"
     volumes:
-      - ./apps/conductor/configs/arrangerConfigs/id-index:/app/modules/server/configs
+      - ./apps/conductor/configs/arrangerConfigs/id:/app/modules/server/configs
     environment:
       # Elasticsearch Variables
       ES_HOST: http://elasticsearch:9200
