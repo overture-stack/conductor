@@ -52,13 +52,21 @@ rs "${P2_SCRIPT_DIR}/lyricCheck.sh"
 echo -e "\033[1;36mElasticsearch:\033[0m Starting up (this may take a few minutes)"
 rs "${P1_SCRIPT_DIR}/elasticsearchCheck.sh"
 
-# Elasticsearch (File) Setup
-echo -e "\033[1;35m[4/9]\033[0m Setting up File Data in Elasticsearch"
-rs "${P1_SCRIPT_DIR}/elasticsearchSetupFileData.sh"
+# Elasticsearch Setup
+echo -e "\033[1;35m\033[0m Setting up Correlation Data in Elasticsearch"
+rs "${P1_SCRIPT_DIR}/elasticsearchSetupCorrelationData.sh
 
-# Elasticsearch (Tabular) Setup
-echo -e "\033[1;35m[5/9]\033[0m Setting Tabular Data in Elasticsearch"
-rs "${P1_SCRIPT_DIR}/elasticsearchSetupTabularData.sh"
+# Elasticsearch Setup
+echo -e "\033[1;35m\033[0m Setting Mutation Data in Elasticsearch"
+rs "${P1_SCRIPT_DIR}/elasticsearchSetupMutationData.sh
+
+# Elasticsearch Setup
+echo -e "\033[1;35m\033[0m Setting up mRNA Data in Elasticsearch"
+rs "${P1_SCRIPT_DIR}/elasticsearchSetupMrnaData.sh
+
+# Elasticsearch Setup
+echo -e "\033[1;35m\033[0m Setting protein Data in Elasticsearch"
+rs "${P1_SCRIPT_DIR}/elasticsearchSetupProteinData.sh
 
 # Update Conductor to Healthy Status
 echo -e "\033[1;35m[6/9]\033[0m Updating Conductor health status"

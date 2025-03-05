@@ -1,0 +1,64 @@
+{
+  "index_patterns": ["mrna-*"],
+  "aliases": {
+    "mrna_centric": {}
+  },
+  "settings": {
+    "index.max_result_window": 300000,
+    "index.number_of_shards": 3
+  },
+  "mappings": {
+    "properties": {
+      "Entrez_Gene_Id": { "type": "integer" },
+      "Hugo_Symbol": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Average_Expression": { "type": "float" },
+      "Number_of_Tumour_Samples": { "type": "integer" },
+      "Cancer_Type": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Dataset_Name": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Is_Oncogene": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Is_Tumor_Suppressor_Gene": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Is_WDR": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "submission_metadata": {
+        "properties": {
+          "submitter_id": { 
+            "type": "keyword",
+            "null_value": "Not Applicable" 
+          },
+          "processing_started": { "type": "date" },
+          "processed_at": { "type": "date" },
+          "source_file": { 
+            "type": "keyword",
+            "null_value": "Not Applicable" 
+          },
+          "record_number": { "type": "integer" },
+          "hostname": { 
+            "type": "keyword",
+            "null_value": "Not Applicable" 
+          },
+          "username": { 
+            "type": "keyword",
+            "null_value": "Not Applicable" 
+          }
+        }
+      }
+    }
+  }
+}

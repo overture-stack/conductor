@@ -1,0 +1,75 @@
+{
+  "index_patterns": ["protein-*"],
+  "aliases": {
+    "protein_centric": {}
+  },
+  "settings": {
+    "index.max_result_window": 300000,
+    "index.number_of_shards": 3
+  },
+  "mappings": {
+    "properties": {
+        "Hugo_Symbol_A": { 
+          "type": "keyword",
+          "null_value": "Not Applicable"
+        },
+        "Hugo_Symbol_B": { 
+          "type": "keyword", 
+          "null_value": "Not Applicable"
+        },
+        "neighborhood": { "type": "integer" },
+        "neighborhood_transferred": { "type": "integer" },
+        "fusion": { "type": "integer" },
+        "cooccurence": { "type": "integer" },
+        "homology": { "type": "integer" },
+        "coexpression": { "type": "integer" },
+        "coexpression_transferred": { "type": "integer" },
+        "experiments": { "type": "integer" },
+        "experiments_transferred": { "type": "integer" },
+        "database": { "type": "integer" },
+        "database_transferred": { "type": "integer" },
+        "textmining": { "type": "integer" },
+        "textmining_transferred": { "type": "integer" },
+        "combined_score": { "type": "integer" },
+        "dataset_name": { 
+          "type": "keyword",
+          "null_value": "Not Applicable"
+        },
+        "Is_Oncogene": { 
+          "type": "keyword",
+          "null_value": "Not Applicable"
+        },
+        "Is_Tumor_Suppressor_Gene": { 
+          "type": "keyword",
+          "null_value": "Not Applicable"
+        },
+        "Is_WDR": { 
+          "type": "keyword",
+          "null_value": "Not Applicable"
+        },
+        "submission_metadata": {
+          "properties": {
+            "submitter_id": { 
+              "type": "keyword",
+              "null_value": "Not Applicable"
+            },
+            "processing_started": { "type": "date" },
+            "processed_at": { "type": "date" },
+            "source_file": { 
+              "type": "keyword",
+              "null_value": "Not Applicable"
+            },
+            "record_number": { "type": "integer" },
+            "hostname": { 
+              "type": "keyword",
+              "null_value": "Not Applicable"
+            },
+            "username": { 
+              "type": "keyword",
+              "null_value": "Not Applicable"
+            }
+          }
+        }
+      }
+    }
+  }

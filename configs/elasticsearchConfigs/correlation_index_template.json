@@ -1,0 +1,83 @@
+{
+  "index_patterns": ["correlation-*"],
+  "aliases": {
+    "correlation_centric": {}
+  },
+  "settings": {
+    "index.max_result_window": 300000,
+    "index.number_of_shards": 3
+  },
+  "mappings": {
+    "properties": {
+      "N": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Hugo_Symbol_A": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Entrez_Gene_Id_A": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Hugo_Symbol_B": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Entrez_Gene_Id_B": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "SpearmanCorr": { "type": "float" },
+      "SpearmanP": { "type": "float" },
+      "PearsonCorr": { "type": "float" },
+      "PearsonP": { "type": "float" },
+      "SpearmanCorrSquare": { "type": "float" },
+      "PearsonCorrSquare": { "type": "float" },
+      "Cancer_Type": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Dataset_Name": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Is_Oncogene": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Is_Tumor_Suppressor_Gene": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "Is_WDR": { 
+        "type": "keyword",
+        "null_value": "Not Applicable" 
+      },
+      "submission_metadata": {
+        "properties": {
+          "submitter_id": { 
+            "type": "keyword",
+            "null_value": "Not Applicable" 
+          },
+          "processing_started": { "type": "date" },
+          "processed_at": { "type": "date" },
+          "source_file": { 
+            "type": "keyword",
+            "null_value": "Not Applicable" 
+          },
+          "record_number": { "type": "integer" },
+          "hostname": { 
+            "type": "keyword",
+            "null_value": "Not Applicable" 
+          },
+          "username": { 
+            "type": "keyword",
+            "null_value": "Not Applicable" 
+          }
+        }
+      }
+    }
+  }
+}

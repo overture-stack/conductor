@@ -36,31 +36,39 @@ echo -e "\033[1;36m║   Spinning up the Prelude Phase One Development Portal   
 echo -e "\033[1;36m╚══════════════════════════════════════════════════════════╝\033[0m"
 
 # Cleanup any existing healthcheck file
-echo -e "\n\033[1;35m[1/6]\033[0m Cleaning up existing health check files"
+echo -e "\n\033[1;35m\033[0m Cleaning up existing health check files"
 rs "${SCRIPT_DIR}/healthcheckCleanup.sh"
 
 echo -e "\033[1;36mElasticsearch:\033[0m Starting up (this may take a few minutes)"
 rs "${SCRIPT_DIR}/elasticsearchCheck.sh"
 
-# Elasticsearch (File) Setup
-echo -e "\n\033[1;35m[2/6]\033[0m Setting up File Data in Elasticsearch"
-rs "${SCRIPT_DIR}/elasticsearchSetupFileData.sh"
+# Elasticsearch Setup
+echo -e "\033[1;35m\033[0m Setting up Correlation Data in Elasticsearch"
+rs "${SCRIPT_DIR}/elasticsearchSetupCorrelationData.sh"
 
-# Elasticsearch (Tabular) Setup
-echo -e "\n\033[1;35m[3/6]\033[0m Setting Tabular Data in Elasticsearch"
-rs "${SCRIPT_DIR}/elasticsearchSetupTabularData.sh"
+# Elasticsearch Setup
+echo -e "\033[1;35m\033[0m Setting Mutation Data in Elasticsearch"
+rs "${SCRIPT_DIR}/elasticsearchSetupMutationData.sh"
+
+# Elasticsearch Setup
+echo -e "\033[1;35m\033[0m Setting up mRNA Data in Elasticsearch"
+rs "${SCRIPT_DIR}/elasticsearchSetupMrnaData.sh"
+
+# Elasticsearch Setup
+echo -e "\033[1;35m\033[0m Setting protein Data in Elasticsearch"
+rs "${SCRIPT_DIR}/elasticsearchSetupProteinData.sh"
 
 # Update Conductor to Healthy Status
-echo -e "\n\033[1;35m[4/6]\033[0m Updating Conductor health status"
+echo -e "\n\033[1;35m\033[0m Updating Conductor health status"
 echo "healthy" > /health/conductor_health
 echo -e "\033[1;36mConductor:\033[0m Updating Container Status. Health check file created"
 
 # Check Stage
-echo -e "\n\033[1;35m[5/6]\033[0m Checking Stage"
+echo -e "\n\033[1;35m\033[0m Checking Stage"
 rs "${SCRIPT_DIR}/stageCheck.sh"
 
 # Check Arranger
-echo -e "\n\033[1;35m[6/6]\033[0m Checking Arranger"
+echo -e "\n\033[1;35m\033[0m Checking Arranger"
 rs "${SCRIPT_DIR}/arrangerCheck.sh"
 
 # Remove Health Check File

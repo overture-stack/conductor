@@ -29,9 +29,13 @@ services:
       - "9204:9204"
     volumes:
       - ./apps/composer/:/composer
-      - ./data:/data
       - ./apps/conductor/:/conductor
+      - ./data:/data
       - ./volumes/health:/health
+      - ./configs/elasticsearchConfigs/correlation_index_template.json:/usr/share/elasticsearch/config/correlation_index_template.json
+      - ./configs/elasticsearchConfigs/mutation_index_template.json:/usr/share/elasticsearch/config/mutation_index_template.json
+      - ./configs/elasticsearchConfigs/mrna_index_template.json:/usr/share/elasticsearch/config/mrna_index_template.json
+      - ./configs/elasticsearchConfigs/protein_index_template.json:/usr/share/elasticsearch/config/protein_index_template.json
     environment:
       PROFILE: ${PROFILE:-default}
       # Inputs
@@ -185,17 +189,31 @@ services:
     ports:
       - "9200:9200"
     environment:
+      PUID: 3381
+      PGID: 100
       discovery.type: single-node
       cluster.name: workflow.elasticsearch
-      ES_JAVA_OPTS: -Xms512m -Xmx2048m
-      ES_USER: elastic
+      ES_JAVA_OPTS: -Xms8g -Xmx8g
       ELASTIC_PASSWORD: myelasticpassword
       xpack.security.enabled: "true"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "50m"
-        max-file: "10"
+      MANAGE_INDEX_TEMPLATES: "true"
+      NETWORK_HOST: http://localhost:9200
+      bootstrap.memory_lock: "true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    deploy:
+      resources:
+        limits:
+          cpus: "6"
+          memory: 16G
+        reservations:
+          cpus: "2"
+          memory: 8G
     volumes:
       - elasticsearch-data:/usr/share/configs/elasticsearch/data
     healthcheck:
@@ -209,16 +227,52 @@ services:
     networks:
       - conductor-network
 
-  # ------------------------------------------------------------------------------------#
-  # Arranger-Server for our tabular data                                                #
-  # ------------------------------------------------------------------------------------#
-  # Search API generation with compatible search UI components                          #
-  # Documentation Link: https://docs.overture.bio/docs/core-software/Arranger/overview  #
-  # ------------------------------------------------------------------------------------#
-  arranger-tabular:
+  # ======================================
+  # Arranger-Server Correlations
+  # ======================================
+  # Search API generation with compatible search UI components
+  # Documentation Link: https://www.overture.bio/documentation/guides/deployment/dataportal/#running-arranger
+  # --------------------------------------
+  arranger-correlation:
     profiles: ["phase1", "phase2", "phase3", "stageDev", "default"]
     image: ghcr.io/overture-stack/arranger-server:3.0.0-beta.36
-    container_name: arranger-tabular
+    container_name: arranger-correlation
+    platform: linux/amd64
+    depends_on:
+      conductor:
+        condition: service_healthy
+    ports:
+      - "5050:5050"
+    volumes:
+      - ./configs/arrangerConfigs/correlationConfigs/base.json:/app/modules/server/configs/base.json
+      - ./configs/arrangerConfigs/correlationConfigs/extended.json:/app/modules/server/configs/extended.json
+      - ./configs/arrangerConfigs/correlationConfigs/facets.json:/app/modules/server/configs/facets.json
+      - ./configs/arrangerConfigs/correlationConfigs/matchbox.json:/app/modules/server/configs/matchbox.json
+      - ./configs/arrangerConfigs/correlationConfigs/table.json:/app/modules/server/configs/table.json
+    environment:
+      # Arranger Variables
+      PORT: 5050
+      ENABLE_LOGS: false
+      # Elasticsearch Variables
+      ES_HOST: http://elasticsearch:9200
+      ES_USER: elastic
+      ES_PASS: myelasticpassword
+      ES_ARRANGER_SET_INDEX: correlation_arranger_set
+      DEBUG: true
+    networks:
+      - conductor-network
+
+  # ======================================
+  # Arranger-Server Mutations
+  # ======================================
+  # Search API generation with compatible search UI components
+  # Documentation Link: https://www.overture.bio/documentation/guides/deployment/dataportal/#running-arranger
+  # Check logs on arranger server for manifest columns
+  # --------------------------------------
+  arranger-mutation:
+    profiles: ["phase1", "phase2", "phase3", "stageDev", "default"]
+    image: ghcr.io/overture-stack/arranger-server:3.0.0-beta.36
+    container_name: arranger-mutation
     platform: linux/amd64
     depends_on:
       conductor:
@@ -226,17 +280,91 @@ services:
     ports:
       - "5051:5051"
     volumes:
-      - ./apps/conductor/configs/arrangerConfigs/tabular-index:/app/modules/server/configs
+      - ./configs/arrangerConfigs/mutationConfigs/base.json:/app/modules/server/configs/base.json
+      - ./configs/arrangerConfigs/mutationConfigs/extended.json:/app/modules/server/configs/extended.json
+      - ./configs/arrangerConfigs/mutationConfigs/facets.json:/app/modules/server/configs/facets.json
+      - ./configs/arrangerConfigs/mutationConfigs/matchbox.json:/app/modules/server/configs/matchbox.json
+      - ./configs/arrangerConfigs/mutationConfigs/table.json:/app/modules/server/configs/table.json
     environment:
+      # Arranger Variables
+      PORT: 5051
+      ENABLE_LOGS: false
       # Elasticsearch Variables
       ES_HOST: http://elasticsearch:9200
       ES_USER: elastic
       ES_PASS: myelasticpassword
-      ES_ARRANGER_SET_INDEX: tabular_arranger_set
-      # Arranger Variables (Port required)
-      PORT: 5051
-      DEBUG: false
+      ES_ARRANGER_SET_INDEX: mutation_arranger_set
+      DEBUG: true
+    networks:
+      - conductor-network
+
+  # ======================================
+  # Arranger-Server MRNA
+  # ======================================
+  # Search API generation with compatible search UI components
+  # Documentation Link: https://www.overture.bio/documentation/guides/deployment/dataportal/#running-arranger
+  # --------------------------------------
+  arranger-mrna:
+    profiles: ["phase1", "phase2", "phase3", "stageDev", "default"]
+    image: ghcr.io/overture-stack/arranger-server:3.0.0-beta.36
+    container_name: arranger-mrna
+    platform: linux/amd64
+    depends_on:
+      conductor:
+        condition: service_healthy
+    ports:
+      - "5052:5052"
+    volumes:
+      - ./configs/arrangerConfigs/mrnaConfigs/base.json:/app/modules/server/configs/base.json
+      - ./configs/arrangerConfigs/mrnaConfigs/extended.json:/app/modules/server/configs/extended.json
+      - ./configs/arrangerConfigs/mrnaConfigs/facets.json:/app/modules/server/configs/facets.json
+      - ./configs/arrangerConfigs/mrnaConfigs/matchbox.json:/app/modules/server/configs/matchbox.json
+      - ./configs/arrangerConfigs/mrnaConfigs/table.json:/app/modules/server/configs/table.json
+    environment:
+      # Arranger Variables
+      PORT: 5052
       ENABLE_LOGS: false
+      # Elasticsearch Variables
+      ES_HOST: http://elasticsearch:9200
+      ES_USER: elastic
+      ES_PASS: myelasticpassword
+      ES_ARRANGER_SET_INDEX: mrna_arranger_set
+      DEBUG: true
+    networks:
+      - conductor-network
+
+  # ======================================
+  # Arranger-Server protein
+  # ======================================
+  # Search API generation with compatible search UI components
+  # Documentation Link: https://www.overture.bio/documentation/guides/deployment/dataportal/#running-arranger
+  # --------------------------------------
+  arranger-protein:
+    profiles: ["phase1", "phase2", "phase3", "stageDev", "default"]
+    image: ghcr.io/overture-stack/arranger-server:3.0.0-beta.36
+    container_name: arranger-protein
+    platform: linux/amd64
+    depends_on:
+      conductor:
+        condition: service_healthy
+    ports:
+      - "5053:5053"
+    volumes:
+      - ./configs/arrangerConfigs/proteinConfigs/base.json:/app/modules/server/configs/base.json
+      - ./configs/arrangerConfigs/proteinConfigs/extended.json:/app/modules/server/configs/extended.json
+      - ./configs/arrangerConfigs/proteinConfigs/facets.json:/app/modules/server/configs/facets.json
+      - ./configs/arrangerConfigs/proteinConfigs/matchbox.json:/app/modules/server/configs/matchbox.json
+      - ./configs/arrangerConfigs/proteinConfigs/table.json:/app/modules/server/configs/table.json
+    environment:
+      # Arranger Variables
+      PORT: 5053
+      ENABLE_LOGS: false
+      # Elasticsearch Variables
+      ES_HOST: http://elasticsearch:9200
+      ES_USER: elastic
+      ES_PASS: myelasticpassword
+      ES_ARRANGER_SET_INDEX: protein_arranger_set
+      DEBUG: true
     networks:
       - conductor-network
 
@@ -248,7 +376,7 @@ services:
   # ------------------------------------------------------------------------------------#
   stage:
     profiles: ["phase1", "phase2", "phase3", "default"]
-    image: localstageimage:1.0
+    image: drugdiscoverystageimage:1.0
     container_name: stage
     pull_policy: never
     platform: linux/arm64/v8
@@ -260,20 +388,27 @@ services:
     environment:
       # Stage Variables
       NEXTAUTH_URL: http://localhost:3000/api/auth
-      NEXT_PUBLIC_LAB_NAME: Overture Prelude Portal
+      NEXT_PUBLIC_LAB_NAME: Drug Discovery POC
       NEXT_PUBLIC_ADMIN_EMAIL: example@example.com
-      NEXT_PUBLIC_DEBUG: false
+      NEXT_PUBLIC_DEBUG: true
       NEXT_PUBLIC_SHOW_MOBILE_WARNING: true
       NEXT_PUBLIC_ENABLE_DOWNLOADS: true
-      # File Arranger Variables
-      NEXT_PUBLIC_ARRANGER_FILE_DATA_API: http://arranger-file:5050
-      NEXT_PUBLIC_ARRANGER_FILE_DATA_DOCUMENT_TYPE: file
-      NEXT_PUBLIC_ARRANGER_FILE_DATA_INDEX: file_centric
-      NEXT_PUBLIC_ARRANGER_MANIFEST_COLUMNS: repositories.code, analysis.analysis_id, object_id, study_id, file.name, file.size, file.md5sum, file_access, analysis.experiment.acknowledgements.strategy, file.data_type, analysis.experiment.data.sequence_length
-      # Tabular Arranger Variables
-      NEXT_PUBLIC_ARRANGER_TABULAR_DATA_API: http://arranger-tabular:5051
-      NEXT_PUBLIC_ARRANGER_TABULAR_DATA_DOCUMENT_TYPE: file
-      NEXT_PUBLIC_ARRANGER_TABULAR_DATA_INDEX: tabular_centric
+      # Correlation Arranger Variables
+      NEXT_PUBLIC_ARRANGER_CORRELATION_API: http://localhost:5050/graphql # Updated inline with nginx reverse proxy
+      NEXT_PUBLIC_ARRANGER_CORRELATION_DOCUMENT_TYPE: file
+      NEXT_PUBLIC_ARRANGER_CORRELATION_INDEX: correlation_centric
+      # Mutation Arranger Variables
+      NEXT_PUBLIC_ARRANGER_MUTATION_API: http://localhost:5051/graphql # Updated inline with nginx reverse proxy
+      NEXT_PUBLIC_ARRANGER_MUTATION_DOCUMENT_TYPE: file
+      NEXT_PUBLIC_ARRANGER_MUTATION_INDEX: mutation_centric
+      # MRNA Arranger Variables
+      NEXT_PUBLIC_ARRANGER_MRNA_API: http://localhost:5052/graphql # Updated inline with nginx reverse proxy
+      NEXT_PUBLIC_ARRANGER_MRNA_DOCUMENT_TYPE: file
+      NEXT_PUBLIC_ARRANGER_MRNA_INDEX: mrna_centric
+      # protein Arranger Variables
+      NEXT_PUBLIC_ARRANGER_PROTEIN_API: http://localhost:5053/graphql # Updated inline with nginx reverse proxy
+      NEXT_PUBLIC_ARRANGER_PROTEIN_DOCUMENT_TYPE: file
+      NEXT_PUBLIC_ARRANGER_PROTEIN_INDEX: protein_centric
       # Using localhost for client-side requests
       NEXT_PUBLIC_SONG_API: http://song:8080
       NEXT_PUBLIC_LYRIC_API: http://lyric:3030
@@ -545,25 +680,6 @@ services:
     networks:
       - conductor-network
 
-  song-client:
-    profiles: ["phase3", "default"]
-    image: ghcr.io/overture-stack/song-client:d7e5cb61
-    container_name: song-client
-    platform: linux/amd64
-    depends_on:
-      conductor:
-        condition: service_healthy
-    volumes:
-      - ./data:/data
-      - ./output:/output
-    environment:
-      ACCESSTOKEN: 68fb42b4-f1ed-4e8c-beab-3724b99fe528
-      CLIENT_STUDY_ID: demo
-      CLIENT_SERVER_URL: http://song:8080
-    networks:
-      - conductor-network
-    command: tail -f /dev/null
-
   # -----------------------------------------------------------------------------------#
   # SongDb                                                                             #
   # -----------------------------------------------------------------------------------#
@@ -632,25 +748,6 @@ services:
       UPLOAD_CONNECTION_TIMEOUT: 1200000
     networks:
       - conductor-network
-
-  score-client:
-    profiles: ["phase3", "default"]
-    image: ghcr.io/overture-stack/score:6c4a3a3c
-    container_name: score-client
-    platform: linux/amd64
-    depends_on:
-      conductor:
-        condition: service_healthy
-    volumes:
-      - ./data:/data
-      - ./output:/output
-    environment:
-      ACCESSTOKEN: 68fb42b4-f1ed-4e8c-beab-3724b99fe528
-      STORAGE_URL: http://score:8087
-      METADATA_URL: http://song:8080
-    networks:
-      - conductor-network
-    command: tail -f /dev/null
 
   # -----------------------------------------------------------------------------------#
   # Minio                                                                              #
