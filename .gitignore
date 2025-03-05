@@ -1,1 +1,8 @@
+.env
 .DS_Store
+node_modules
+__MACOSX
+
+volumes
+node_modules
+dist

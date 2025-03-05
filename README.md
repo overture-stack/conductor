@@ -1,69 +1,100 @@
-# Conductor 
+# Prelude Pre-release
 
-Conductor is a flexible Docker Compose setup that simplifies the process of spinning up Overture development and deployment configurations using Docker profiles and extensible scripting events.
+Prelude is a tool that enables teams to incrementally build their data platform.
+By breaking down data portal development into phased steps, teams can
+systematically verify requirements and user workflows while minimizing technical
+overhead.
 
-## Key Features
+This process enables teams to:
 
-- **Profile-based Deployments**: Uses Docker profiles to manage different environment setups.
-- **Conductor-driven Execution**: The Conductor service executes ordered scripts based on the `PROFILE` environment variable.
+- Validate project requirements with hands-on testing
+- Gain a clear understanding of user workflows and interactions
+- Documented data management processes
+- Define security and access control needs
+- Build a solid foundation for production deployment planning
 
-## Getting Started
+## Development Phases
 
-**1. Clone the repo's `main` branch**
+Development progresses through four distinct phases, each building upon the
+previous phase's foundation while introducing new capabilities.
+
+| Phase                                            | Description                                                                                       | Software Components                                                                 | Status         |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- | -------------- |
+| **Phase1:** Data Exploration & Theming           | Display your tabular data in a themable portal with our front-end and back-end search components. | Composer, Elasticsearch, Arranger, Stage                                            | 🟢 Working     |
+| **Phase2:** Tabular Data Management & Validation | Implementation of tabular data submission, storage and validation.                                | All the above with Lyric, LyricDb (Postgres), Lectern and LecternDb (MongoDb) added | 🟡 Pending     |
+| **Phase3:** File Data & Metadata Management      | Implement back-end file management.                                                               | All the above with Song, Score, SongDb (Postgres) and Object Storage (Minio)        | 🟡 Pending     |
+| **PhaseFour:** Identity and Access management    | Configure Keycloak to authenticate users and authorize what they have access too.                 | Empahsis on data access control planning and Keycloak configuration                 | ⚪ Not Started |
+
+## Prerequisites
+
+### Required Software
+
+- Node.js 18 or higher
+- npm 9 or higher
+- Docker Desktop 4.32.0 or higher
+  ([Download here](https://www.docker.com/products/docker-desktop/))
+
+### Docker Resource Requirements
+
+> [!important] Allocate sufficient resources to Docker:
+>
+> - Minimum CPU: `8 cores`
+> - Memory: `8 GB`
+> - Swap: `2 GB`
+> - Virtual disk: `64 GB`
+>
+> Adjust these in Docker Desktop settings under "Resources".
+
+### Running the portal
+
+#### Step 1: Installation & Setup
+
+1. **Clone the repo branch**
 
 ```
-git clone -b concerto https://github.com/overture-stack/composer.git && cd composer
+git clone -b preludeV2.1 https://github.com/overture-stack/conductor.git
 ```
 
-**2. Run one of the following commands to spin up different environments:**
-
-| Environment | Unix/macOS | Windows |
-|-------------|------------|---------|
-| Overture Platform | `make platform` | `make.bat platform` |
-| Stage Dev | `make stageDev` | `make.bat stageDev` |
-| Arranger Dev | `make arrangerDev` | `make.bat arrangerDev` |
-| Maestro Dev | `make maestroDev` | `make.bat maestroDev` |
-| Song Dev | `make songDev` | `make.bat songDev` |
-| Score Dev | `make scoreDev` | `make.bat scoreDev` |
-
-Each command spins up complementary services for the specified development environment.
-
-## Repository Structure
+2. **Build the Stage image using the dockerfile** For phase1 run:
 
 ```
-.
-├── conductorScripts/
-│   ├── deployments
-│   └── services
-├── configurationFiles/
-│   ├── arrangerConfigs
-│   ├── elasticsearchConfigs
-│   └── keycloakConfigs
-├── guideMaterials
-├── persistentStorage/
-│   ├── data-keycloak-db
-│   ├── data-minio
-│   └── data-song-db
-├── Makefile
-└── make.bat
+cd apps/stage
+docker build -t localstageimage:1.0 .
 ```
 
-- **`conductorScripts/`** Contains scripts for orchestrating the deployment process.
-    - `deployments/`: Scripts that execute service scripts sequentially based on the deployment configuration. These also include custom post-deployment logs with essential next steps for the deployment scenario.
-    - `services/`: Modular scripts for individual service setup tasks. Each file is named according to its purpose, with inline comments documenting the code.
+After editing your stage folder make sure you run the above build command before
+deploying locally using this docker compose setup.
 
-- **`configurationFiles/`** Stores all required configuration files, including:
-    - `arrangerConfigs/`: Configuration files specific to Arranger.
-    - `elasticsearchConfigs/`: Configuration files for Elasticsearch, encompassing indexing mappings and documents for seeding data.
-    - `keycloakConfigs/`: Configuration files for Keycloak, including preconfigured realm files and Overture API key provider details.
+#### Step 2: Deployment
 
-- **`guideMaterials/`** Supplementary folders and files for use with the [Overture guides](https://www.overture.bio/documentation/guides/).
+Run one of the following commands **from the root of the repository**:
 
-- **`persistentStorage/`** Directory for storing persistent data during container startups and restarts. These folders come pre-loaded with mock data.
-    - `data-keycloak-db/`: Persistent local storage for the Keycloak database.
-    - `data-minio/`: Persistent local storage for MinIO object storage.
-    - `data-song-db/`: Persistent local storage for the Song database.
+| Environment          | Unix/macOS       | Windows |
+| -------------------- | ---------------- | ------- |
+| Phase One Platform   | `make phase1`    | pending |
+| Phase Two Platform   | pending          | pending |
+| Phase Three Platform | pending          | pending |
+| Stage Development    | `make stage-dev` | pending |
 
-- **`Makefile`** Contains [`make` commands](https://www.gnu.org/software/make/manual/make.html#Overview-of-make) for Unix-based systems (macOS, Linux) to streamline Docker operations.
+Following startup the front end portal will be available at your
+`localhost:3000`
 
-- **`make.bat`** Windows equivalent of the Makefile, featuring batch commands tailored for Windows systems.
+### Helper Commands
+
+| Description                                                                                 | Unix/macOS              | Windows |
+| ------------------------------------------------------------------------------------------- | ----------------------- | ------- |
+| Shuts down all containers                                                                   | `make down`             | pending |
+| Shuts down all containers and removes volumes                                               | `make reset`            | pending |
+| Submits pre-configured demo data                                                            | `make load-data`        | pending |
+| Generates index mappings and arranger configurations using the default tabularData.csv file | `make generate-configs` | pending |
+| Removes all documents from elasticsearch                                                    | `make clean-data`       | pending |
+
+## Documentation
+
+Detailed documentation can be found in multiple locations:
+
+- The `/docs` folder at the root of this repository
+- README files within each root directory containing information on the folder's
+  purpose and usage
+- Frontend documentation available after deployment at
+  `http://localhost:3000/documentation`
